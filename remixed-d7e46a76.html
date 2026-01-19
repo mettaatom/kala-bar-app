@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalā Bar Pressed Juice Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #FFFAED;
+            color: #2c2c2c;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #2c2c2c;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 300;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #2c2c2c;
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            font-weight: 400;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: #f5f5f5;
+        }
+
+        .tab.active {
+            border-bottom-color: #2c2c2c;
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .search-container {
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #2c2c2c;
+            font-size: 1.1rem;
+            background: #FFFAED;
+        }
+
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44,44,44,0.1);
+        }
+
+        .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .recipe-card {
+            border: 1px solid #2c2c2c;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: #FFFAED;
+        }
+
+        .recipe-card:hover {
+            box-shadow: 5px 5px 0 #2c2c2c;
+            transform: translateY(-2px);
+        }
+
+        .recipe-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .recipe-card .subtitle {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .recipe-card .tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #2c2c2c;
+            color: #FFFAED;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .ingredients-preview {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .recipe-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #FFFAED;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #2c2c2c;
+        }
+
+        .modal-content h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .modal-content .subtitle {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .info-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-left: 4px solid #2c2c2c;
+            background: #F5F0E3;
+        }
+
+        .info-section h4 {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .ingredients-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .ingredients-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-weight: 500;
+        }
+
+        .ingredients-list li:last-child {
+            border-bottom: none;
+        }
+
+        .content-section {
+            margin-bottom: 30px;
+        }
+
+        .content-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            border-bottom: 1px solid #2c2c2c;
+            padding-bottom: 5px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #2c2c2c;
+        }
+
+        th {
+            background: #2c2c2c;
+            color: #FFFAED;
+            font-weight: 600;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .checklist li:before {
+            content: "☐ ";
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .step-list li:before {
+            content: counter(step-counter) ". ";
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .cocktail-section {
+            background: #000;
+            color: #fff;
+            margin: -20px;
+            padding: 20px;
+        }
+
+        .cocktail-section .search-box {
+            background: #222;
+            color: #FFFAED;
+            border: 2px solid #FFFAED;
+        }
+
+        .cocktail-section .search-box::placeholder {
+            color: #ccc;
+        }
+
+        .cocktail-section .recipe-card {
+            background: #111;
+            border: 1px solid #FFFAED;
+            color: #FFFAED;
+        }
+
+        .cocktail-section .recipe-card:hover {
+            box-shadow: 5px 5px 0 #FFFAED;
+        }
+
+        .cocktail-section .tag {
+            background: #FFFAED;
+            color: #2c2c2c;
+        }
+
+        .cocktail-section .modal-content {
+            background: #000;
+            color: #fff;
+        }
+
+        .cocktail-section .modal-content .info-section {
+            background: #222;
+            border-left: 4px solid #fff;
+        }
+
+        .cocktail-section .modal-content .ingredients-list li {
+            border-bottom: 1px solid #333;
+        }
+
+        .cocktail-section .close-btn {
+            color: #FFFAED;
+        }
+
+        .batch-calculator {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #2c2c2c;
+            background: #F5F0E3;
+        }
+
+        .cocktail-section .batch-calculator {
+            background: #222;
+            border: 1px solid #fff;
+        }
+
+        .batch-calculator label {
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .batch-calculator select {
+            padding: 8px 12px;
+            border: 1px solid #2c2c2c;
+            background: #FFFAED;
+            font-size: 1rem;
+        }
+
+        .cocktail-section .batch-calculator select {
+            background: #111;
+            color: #FFFAED;
+            border: 1px solid #FFFAED;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .tabs {
+                font-size: 0.9rem;
+            }
+            
+            .recipe-card {
+                padding: 20px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>KALĀ BAR</h1>
+            <p>Signature Drink & Pressed Juice Collection</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="recipes">Juice Recipes</button>
+            <button class="tab" data-tab="cocktails">Signature Drinks</button>
+            <button class="tab" data-tab="classics">Classic Cocktails</button>
+            <button class="tab" data-tab="production">Production</button>
+            <button class="tab" data-tab="schedule">Schedule</button>
+            <button class="tab" data-tab="weights">Weights</button>
+            <button class="tab" data-tab="sourcing">Sourcing</button>
+            <button class="tab" data-tab="benefits">Benefits</button>
+            <button class="tab" data-tab="service">Service</button>
+        </div>
+
+        <!-- Juice Recipes Tab -->
+        <div class="tab-content active" id="recipes">
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search recipes..." id="searchInput">
+            </div>
+            
+            <div class="recipes-grid" id="recipesGrid">
+                <!-- Recipe cards will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Cocktails Tab -->
+        <div class="tab-content" id="cocktails">
+            <div class="cocktail-section">
+                <div class="search-container">
+                    <input type="text" class="search-box" placeholder="Search cocktails..." id="cocktailSearchInput">
+                </div>
+                
+                <div class="recipes-grid" id="cocktailsGrid">
+                    <!-- Cocktail cards will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Classic Cocktails Tab -->
+        <div class="tab-content" id="classics">
+            <div class="cocktail-section">
+                <div class="search-container">
+                    <input type="text" class="search-box" placeholder="Search classic cocktails..." id="classicSearchInput">
+                </div>
+                
+                <div class="recipes-grid" id="classicsGrid">
+                    <!-- Classic cocktail cards will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Production Tab -->
+        <div class="tab-content" id="production">
+            <div class="content-section">
+                <h3>🥤 Juice Production - Equipment Setup</h3>
+                <ul class="checklist">
+                    <li>Cold-press juicer cleaned and sanitized</li>
+                    <li>Prep station organized by ingredient type</li>
+                    <li>Storage containers labeled and chilled</li>
+                    <li>Compostable cups (16oz)</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>🍹 Cocktail Production - Bar Setup</h3>
+                <ul class="checklist">
+                    <li>All spirits stocked and organized (vodka, gin, rum, tequila, mezcal)</li>
+                    <li>Fresh citrus juices prepared (lime, lemon, orange)</li>
+                    <li>House-made syrups ready (agave, simple, honey, demerara, vanilla)</li>
+                    <li>Cocktail equipment cleaned (shakers, strainers, jiggers, bar spoons)</li>
+                    <li>Garnish station prepped (fresh herbs, citrus wheels, specialty garnishes)</li>
+                    <li>Ice bins filled and cocktail glasses chilled</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>🥤 Juice Ingredient Preparation Order</h3>
+                
+                <h4>Step 1: Produce Washing</h4>
+                <ul class="step-list">
+                    <li>Wash all produce thoroughly under cold running water</li>
+                    <li>Use vegetable brush for root vegetables (carrots, beets, ginger, turmeric)</li>
+                    <li>Pat dry leafy greens and herbs</li>
+                </ul>
+
+                <h4>Step 2: Ingredient Prep</h4>
+                <ul class="step-list">
+                    <li>Remove kale and spinach stems</li>
+                    <li>Core apples (keep skin on)</li>
+                    <li>Peel citrus fruits, remove seeds</li>
+                    <li>Peel root vegetables (beets, ginger, turmeric)</li>
+                    <li>Pre-soak chia seeds over night in water for next shift (1 cup seed : 2 cup water)</li>
+                </ul>
+
+                <h4>Step 3: Juicing Order</h4>
+                <ul class="step-list">
+                    <li>Light colors first: Cucumber, apple, coconut water blends</li>
+                    <li>Green juices: Kale, spinach, parsley combinations</li>
+                    <li>Orange/yellow: Carrot, turmeric, orange combinations</li>
+                    <li>Red juices last: Beet-based blends</li>
+                    <li>Rinse juicer between major color changes</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>🍹 Cocktail Preparation Standards</h3>
+                <ul class="step-list">
+                    <li>Use proper glassware for each cocktail type (coupe, rocks, highball)</li>
+                    <li>Measure all ingredients precisely using jiggers</li>
+                    <li>Shake vigorously for 10-15 seconds when recipe calls for shaking</li>
+                    <li>Double strain cocktails to remove ice chips and muddled ingredients</li>
+                    <li>Express citrus oils over drink when garnishing with peels</li>
+                    <li>Taste test complex cocktails before serving</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>🥤 Juice Production Method</h3>
+                <ul class="step-list">
+                    <li>Measure ingredients according to recipe for individual order</li>
+                    <li>Feed into juicer starting with softer fruits, ending with harder vegetables</li>
+                    <li>Add ginger/turmeric last for maximum flavor extraction</li>
+                    <li>Stir gently to combine if separation occurs</li>
+                    <li>Use shaker and ice and pour into 16oz cup with fresh ice. Shaker and fine strainer will help dilute and chill the juice concentration for quality experience</li>
+                    <li>Serve immediately to customer</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>🍹 Cocktail Service Standards</h3>
+                <ul class="step-list">
+                    <li>Present cocktail within 3-5 minutes of order</li>
+                    <li>Garnish consistently according to recipe specifications</li>
+                    <li>Serve at proper temperature (ice-cold for most cocktails)</li>
+                    <li>Clean bar tools between each drink to prevent flavor contamination</li>
+                    <li>Offer premium upgrades when appropriate</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>Quality Standards</h3>
+                <p><strong>Juice - Flavor Balance:</strong> Sweetness should come primarily from fruits. Adjust with green apple if too earthy/bitter. Ginger should warm, not overpower. Citrus should brighten, not dominate.</p>
+                
+                <p><strong>Cocktail - Balance:</strong> Proper spirit-to-mixer ratios. Citrus should brighten without overpowering. Sweetness balanced with acidity. Garnishes should complement, not mask flavors.</p>
+                
+                <p><strong>Juice - Texture & Appearance:</strong> Smooth consistency (fine strain used every time). Vibrant natural colors. Minimal separation (some is normal). No visible pulp or debris.</p>
+                
+                <p><strong>Cocktail - Presentation:</strong> Proper dilution through shaking/stirring. Clear cocktails should be crystal clear. Layered drinks should have distinct separation. Garnishes should be fresh and properly prepared.</p>
+                
+                <p><strong>Temperature & Service:</strong> Serve ice-cold immediately after preparation. All drinks made fresh to order. Store prepped ingredients properly to maintain freshness.</p>
+            </div>
+        </div>
+
+        <!-- Schedule Tab -->
+        <div class="tab-content" id="schedule">
+            <div class="content-section">
+                <h3>🥤 Juice Bar - Opening (Daily)</h3>
+                <ul class="checklist">
+                    <li>Sanitize juicer and prep area</li>
+                    <li>Inventory fresh produce</li>
+                    <li>Pre-soak chia seeds</li>
+                    <li>Set up ingredient stations</li>
+                    <li>Stock compostable cups</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>🍹 Bar - Opening (Daily)</h3>
+                <ul class="checklist">
+                    <li>Check spirit levels and restock as needed</li>
+                    <li>Prepare fresh citrus juices (lime, lemon, orange)</li>
+                    <li>Make house syrups (simple, agave, honey, demerara)</li>
+                    <li>Set up garnish station with fresh herbs and citrus</li>
+                    <li>Fill ice bins and chill glassware</li>
+                    <li>Clean and organize bar tools</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>🥤 Juice Production Shift</h3>
+                <ul class="checklist">
+                    <li>Wash and prep all produce for made-to-order service</li>
+                    <li>Make each juice individually per order</li>
+                    <li>Follow juicing order (light to dark colors)</li>
+                    <li>Quality test each individual juice</li>
+                    <li>Clean juicer between different juice types</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>🍹 Cocktail Service Shift</h3>
+                <ul class="checklist">
+                    <li>Maintain consistent cocktail recipes and presentation</li>
+                    <li>Keep garnish station stocked throughout service</li>
+                    <li>Monitor ice levels and glassware supply</li>
+                    <li>Clean bar tools regularly during service</li>
+                    <li>Upsell premium spirits and signature cocktails</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>🥤🍹 Combined Service Prep</h3>
+                <ul class="checklist">
+                    <li>Ensure all juice ingredients are fresh and ready</li>
+                    <li>Verify cocktail ingredient levels (spirits, mixers, garnishes)</li>
+                    <li>Set up made-to-order service stations for both juice and cocktails</li>
+                    <li>Prepare sample cups for juice tastings</li>
+                    <li>Check ingredient inventory throughout service</li>
+                    <li>Keep cups and glassware stocked at service areas</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>🥤🍹 Ongoing Service</h3>
+                <ul class="checklist">
+                    <li>Make each drink fresh per customer order</li>
+                    <li>Prep additional ingredients as needed throughout day</li>
+                    <li>Monitor ingredient freshness for both juice and cocktail service</li>
+                    <li>Clean equipment regularly during service (juicer and bar tools)</li>
+                    <li>Update ingredient and spirit availability</li>
+                    <li>Cross-train staff on both juice and cocktail preparation</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>🥤 Juice Bar - Closing</h3>
+                <ul class="checklist">
+                    <li>Clean and sanitize juicer equipment</li>
+                    <li>Properly store remaining fresh produce</li>
+                    <li>Compost all produce waste</li>
+                    <li>Inventory check for next day produce ordering</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>🍹 Bar - Closing</h3>
+                <ul class="checklist">
+                    <li>Clean and sanitize all bar tools and equipment</li>
+                    <li>Store spirits properly and secure liquor inventory</li>
+                    <li>Dispose of used garnishes and prepare fresh for next day</li>
+                    <li>Empty ice bins and clean ice wells</li>
+                    <li>Inventory check for spirit and mixer ordering</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>🥤🍹 Combined Closing</h3>
+                <ul class="checklist">
+                    <li>Update sales tracking for both juice and cocktail sales</li>
+                    <li>Clean and sanitize all shared equipment and surfaces</li>
+                    <li>Secure cash registers and payment systems</li>
+                    <li>Complete end-of-day reports</li>
+                    <li>Set up for next day service</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Weights Tab -->
+        <div class="tab-content" id="weights">
+            <div class="content-section">
+                <h3>Fresh Fruits</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Produce Item</th>
+                                <th>Average Weight</th>
+                                <th>Yield Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Pineapple (whole)</td><td>2-3 lbs</td><td>~12-16 oz usable flesh</td></tr>
+                            <tr><td>Orange (medium)</td><td>6-8 oz</td><td>~4-5 oz juice yield</td></tr>
+                            <tr><td>Apple (medium)</td><td>6-7 oz</td><td>~4-5 oz juice yield</td></tr>
+                            <tr><td>Papaya (medium)</td><td>1-2 lbs</td><td>~8-12 oz flesh</td></tr>
+                            <tr><td>Banana (medium)</td><td>4-5 oz</td><td>~3-4 oz flesh</td></tr>
+                            <tr><td>Lemon (medium)</td><td>3-4 oz</td><td>~1.5-2 oz juice yield</td></tr>
+                            <tr><td>Lime (medium)</td><td>2-3 oz</td><td>~1-1.5 oz juice yield</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3>Fresh Vegetables & Roots</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Produce Item</th>
+                                <th>Average Weight</th>
+                                <th>Yield Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Cucumber (large)</td><td>8-10 oz</td><td>~6-8 oz juice yield</td></tr>
+                            <tr><td>Carrot (medium)</td><td>2-3 oz</td><td>~1.5-2 oz juice yield</td></tr>
+                            <tr><td>Red Beet (medium)</td><td>4-6 oz</td><td>~3-4 oz juice yield</td></tr>
+                            <tr><td>Celery (stalk)</td><td>1-2 oz</td><td>~0.75-1 oz juice yield</td></tr>
+                            <tr><td>Fresh Ginger (1 inch piece)</td><td>0.5-0.75 oz</td><td>High juice concentration</td></tr>
+                            <tr><td>Fresh Turmeric (1 inch piece)</td><td>0.5-0.75 oz</td><td>High juice concentration</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3>Ordering Calculations</h3>
+                <p><strong>For 10 servings of each juice (160 oz total production):</strong></p>
+                <ul>
+                    <li>Pineapples needed: 8-10 whole pineapples</li>
+                    <li>Oranges needed: 20-25 medium oranges</li>
+                    <li>Apples needed: 15-18 medium apples</li>
+                    <li>Carrots needed: 4-5 lbs</li>
+                    <li>Kale needed: 6-8 bunches</li>
+                    <li>Ginger root needed: 2-3 large pieces</li>
+                </ul>
+                
+                <p><strong>Daily Production Estimates:</strong></p>
+                <ul>
+                    <li>25 juices per day: Plan for 2.5x the 10-serving quantities</li>
+                    <li>Waste factor: Add 10-15% extra for prep waste and quality control</li>
+                    <li>Peak day planning: Double quantities for busy tourist days</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Sourcing Tab -->
+        <div class="tab-content" id="sourcing">
+            <div class="content-section">
+                <h3>Premium Local Sources</h3>
+                
+                <h4>Tropical Fruits:</h4>
+                <ul>
+                    <li>Fresh pineapple: Local Hawaiian farms</li>
+                    <li>Papaya: Local organic growers</li>
+                    <li>Passion fruit: Island suppliers</li>
+                </ul>
+
+                <h4>Organic Greens:</h4>
+                <ul>
+                    <li>Kale, spinach: Local organic farms</li>
+                    <li>Fresh herbs: Local growers or Whole Foods</li>
+                </ul>
+
+                <h4>Root Vegetables:</h4>
+                <ul>
+                    <li>Ginger, turmeric: Fresh root suppliers</li>
+                    <li>Carrots, beets: Organic distributors</li>
+                </ul>
+
+                <h4>Coconut Products:</h4>
+                <ul>
+                    <li>Fresh coconut: Local Hawaiian suppliers</li>
+                    <li>Coconut water: Premium brands (Harmless Harvest, Vita Coco)</li>
+                </ul>
+
+                <h4>Spirits - Core Inventory:</h4>
+                <ul>
+                    <li>Vodka: Premium and well brands</li>
+                    <li>Gin: Botanical gin for signature drinks</li>
+                    <li>Light Rum: White rum for tropical cocktails</li>
+                    <li>Dark Rum: For Mai Tais, Hurricanes, floats</li>
+                    <li>Tequila Blanco: For margaritas and tequila cocktails</li>
+                    <li>Reposado Tequila: For premium margaritas</li>
+                    <li>Mezcal: For smoky signature cocktails</li>
+                </ul>
+
+                <h4>Spirits - Optional Additions (New Menu Items):</h4>
+                <ul>
+                    <li><strong>Bourbon or Rye Whiskey:</strong> For Old Fashioned, Whiskey Sour, Manhattan, Mint Julep, Whiskey Ginger</li>
+                    <li><strong>Aperol:</strong> For Aperol Spritz</li>
+                </ul>
+
+                <h4>Mixers & Syrups - Core Inventory:</h4>
+                <ul>
+                    <li>Agave syrup</li>
+                    <li>Simple syrup</li>
+                    <li>Honey syrup</li>
+                    <li>Demerara syrup</li>
+                    <li>Vanilla syrup</li>
+                    <li>Ginger beer</li>
+                    <li>Soda water</li>
+                    <li>Tonic water</li>
+                    <li>Coca-Cola</li>
+                    <li>Prosecco/Champagne</li>
+                </ul>
+
+                <h4>Mixers & Syrups - Optional Additions (New Menu Items):</h4>
+                <ul>
+                    <li><strong>Angostura Bitters:</strong> For Old Fashioned, Manhattan, Whiskey Sour</li>
+                    <li><strong>Sweet Vermouth:</strong> For Manhattan</li>
+                    <li><strong>Orgeat Syrup:</strong> For Mai Tai</li>
+                    <li><strong>Orange Curaçao:</strong> For Mai Tai</li>
+                    <li><strong>Passionfruit Syrup:</strong> For Hurricane</li>
+                    <li><strong>Grenadine:</strong> For Tequila Sunrise, Hurricane</li>
+                    <li><strong>Cranberry Juice:</strong> For Cape Codder</li>
+                    <li><strong>Egg Whites:</strong> Optional for Whiskey Sour foam</li>
+                </ul>
+
+                <h4>Fresh Juices (Made Daily):</h4>
+                <ul>
+                    <li>Fresh lime juice</li>
+                    <li>Fresh lemon juice</li>
+                    <li>Fresh orange juice</li>
+                </ul>
+
+                <h4>Garnishes & Fresh Ingredients:</h4>
+                <ul>
+                    <li>Fresh mint</li>
+                    <li>Fresh basil</li>
+                    <li>Limes, lemons, oranges (for wheels and wedges)</li>
+                    <li>Maraschino cherries</li>
+                    <li>Olives</li>
+                    <li>Edible flowers</li>
+                    <li>Jalapeños</li>
+                    <li>Cucumber</li>
+                    <li>Watermelon (seasonal)</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>Optional Inventory Investment Summary</h3>
+                <p><strong>To add all 14 new classic cocktails, you'll need:</strong></p>
+                
+                <h4>Priority 1 - Whiskey Program (~$40-60)</h4>
+                <ul>
+                    <li>Bourbon or Rye Whiskey (1 bottle) - $25-40</li>
+                    <li>Angostura Bitters (1 bottle) - $8-10</li>
+                    <li>Sweet Vermouth (1 bottle) - $12-15</li>
+                </ul>
+                <p><em>Enables: Old Fashioned, Whiskey Sour, Manhattan, Whiskey Ginger, Mint Julep</em></p>
+
+                <h4>Priority 2 - Aperol Spritz (~$25)</h4>
+                <ul>
+                    <li>Aperol (1 bottle) - $25</li>
+                </ul>
+                <p><em>Enables: Aperol Spritz (uses existing prosecco & soda)</em></p>
+
+                <h4>Priority 3 - Tiki Expansion (~$35-45)</h4>
+                <ul>
+                    <li>Orgeat Syrup (1 bottle) - $12-15</li>
+                    <li>Orange Curaçao (1 bottle) - $15-20</li>
+                    <li>Passionfruit Syrup (1 bottle) - $8-10</li>
+                </ul>
+                <p><em>Enables: Mai Tai, Hurricane (enhanced tropical program)</em></p>
+
+                <h4>Priority 4 - Basic Additions (~$15-20)</h4>
+                <ul>
+                    <li>Grenadine (1 bottle) - $8-10</li>
+                    <li>Cranberry Juice (1 container) - $5-8</li>
+                    <li>Egg Whites (optional, 1 dozen) - $4-6</li>
+                </ul>
+                <p><em>Enables: Tequila Sunrise, Cape Codder, enhanced Whiskey Sour</em></p>
+
+                <p><strong>Total Optional Investment: $115-150</strong></p>
+                <p><em>Note: Mimosa, Bellini, Piña Colada, Rum & Coke, and Gin Rickey use existing inventory!</em></p>
+            </div>
+
+            <div class="content-section">
+                <h3>Quality Standards</h3>
+                <ul>
+                    <li><strong>Always organic:</strong> Leafy greens, apples, celery (dirty dozen)</li>
+                    <li><strong>Local when available:</strong> Pineapple, papaya, coconut</li>
+                    <li><strong>Fresh root spices:</strong> Never powdered ginger/turmeric</li>
+                    <li><strong>Maximum freshness:</strong> 48-hour hold for cut produce</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Benefits Tab -->
+        <div class="tab-content" id="benefits">
+            <div class="content-section">
+                <h3>Digestive Support</h3>
+                <ul>
+                    <li><strong>Paradise Papaya:</strong> Papain enzyme aids protein digestion</li>
+                    <li><strong>Pineapple Express:</strong> Bromelain reduces inflammation</li>
+                    <li><strong>Volcano Fire:</strong> Ginger supports digestive health</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>Immune Boosting</h3>
+                <ul>
+                    <li><strong>Sunrise Aloha:</strong> High vitamin C + turmeric anti-inflammatory</li>
+                    <li><strong>Green Goddess:</strong> Antioxidant-rich greens</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>Hydration & Cleansing</h3>
+                <ul>
+                    <li><strong>Ocean Breeze:</strong> Hydrating and alkalizing</li>
+                    <li><strong>Beet the Heat:</strong> Liver detox + circulation support</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>Energy & Metabolism</h3>
+                <ul>
+                    <li><strong>Kale Yeah Paradise:</strong> Sustained energy from healthy fats</li>
+                    <li><strong>Volcano Fire:</strong> Metabolism-boosting spices</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Service Tab -->
+        <div class="tab-content" id="service">
+            <div class="content-section">
+                <h3>Optional Education and Elevation</h3>
+                <ul>
+                    <li>Explain health benefits of each juice selection</li>
+                    <li>Offer tastings before purchase</li>
+                    <li>Suggest combinations for specific wellness goals</li>
+                    <li>Share ingredient sourcing story</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>Presentation Standards</h3>
+                <ul>
+                    <li>Serve in plastic compostable cups for patio or glassware strictly for bar seating (glassware cannot leave bar seating for safety)</li>
+                    <li>Shake gently before serving if separated</li>
+                    <li>Provide compostable straws</li>
+                    <li>Instagram-worthy garnish when appropriate</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>Upselling Opportunities</h3>
+                <ul>
+                    <li><strong>Juice flight:</strong> 3 x 4oz tastings for variety</li>
+                    <li><strong>Daily cleanse packages:</strong> 3 juices for full-day nutrition</li>
+                    <li><strong>Wellness consultations:</strong> Personalized recommendations</li>
+                    <li><strong>Loyalty program:</strong> Frequent juice buyer rewards</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>Sustainability Focus</h3>
+                <ul>
+                    <li>Local sourcing reduces carbon footprint</li>
+                    <li>Eco packaging - natural presentation</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipe Modal -->
+    <div class="recipe-modal" id="recipeModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeModal">&times;</button>
+            <div id="modalRecipeContent">
+                <!-- Recipe content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Recipe data
+        const recipes = [
+            {
+                id: 'sunrise-aloha',
+                name: 'Sunrise Aloha',
+                subtitle: 'The perfect Hawaiian morning awakening',
+                tags: ['Immune Boost', 'Anti-inflammatory', 'Vitamin C'],
+                healthFocus: 'Immune boost, anti-inflammatory, vitamin C powerhouse',
+                tasteProfile: 'Sweet, zesty, with warming spice finish',
+                keyBenefits: 'High vitamin C, curcumin, digestive support',
+                ingredients: [
+                    '6 oz fresh pineapple chunks',
+                    '4 oz fresh orange (peeled)',
+                    '3 oz carrot',
+                    '1 inch fresh ginger root',
+                    '1/2 inch fresh turmeric root'
+                ]
+            },
+            {
+                id: 'green-goddess',
+                name: 'Green Goddess',
+                subtitle: 'Island greens meet tropical sweetness',
+                tags: ['Detox', 'Alkalizing', 'Nutrient-dense'],
+                healthFocus: 'Detox, alkalizing, nutrient-dense leafy greens',
+                tasteProfile: 'Fresh, crisp, naturally sweet with mint finish',
+                keyBenefits: 'Iron, folate, chlorophyll, antioxidants',
+                ingredients: [
+                    '2 cups fresh kale leaves (stems removed)',
+                    '1 cup fresh spinach',
+                    '4 oz cucumber (with skin)',
+                    '3 oz green apple (cored)',
+                    '3 oz fresh pineapple chunks',
+                    '1/2 fresh lime (juiced)',
+                    '6-8 fresh mint leaves'
+                ]
+            },
+            {
+                id: 'volcano-fire',
+                name: 'Volcano Fire',
+                subtitle: 'Spicy immunity blend with tropical heat',
+                tags: ['Metabolism', 'Immune Support', 'Circulation'],
+                healthFocus: 'Metabolism boost, immune support, circulation',
+                tasteProfile: 'Sweet tropical base with spicy kick',
+                keyBenefits: 'Capsaicin, digestive enzymes, metabolism support',
+                ingredients: [
+                    '5 oz fresh pineapple chunks',
+                    '4 oz fresh papaya',
+                    '1/4 fresh jalapeño (seeds removed for less heat)',
+                    '1 inch fresh ginger root',
+                    '1/2 fresh lime (juiced)',
+                    'Pinch of cayenne pepper',
+                    '3 oz coconut water'
+                ]
+            },
+            {
+                id: 'ocean-breeze',
+                name: 'Ocean Breeze',
+                subtitle: 'Hydrating cucumber mint refresher',
+                tags: ['Hydration', 'Electrolytes', 'Cooling'],
+                healthFocus: 'Hydration, electrolyte balance, cooling',
+                tasteProfile: 'Ultra-refreshing, clean, spa-like',
+                keyBenefits: 'Hydration, potassium, natural electrolytes',
+                ingredients: [
+                    '6 oz cucumber (with skin)',
+                    '3 oz celery stalks',
+                    '3 oz green apple (cored)',
+                    '1/2 fresh lime (juiced)',
+                    '8-10 fresh mint leaves',
+                    '3 oz coconut water'
+                ]
+            },
+            {
+                id: 'paradise-papaya',
+                name: 'Paradise Papaya',
+                subtitle: 'Tropical enzyme powerhouse',
+                tags: ['Digestive Enzymes', 'Vitamin A & C', 'Anti-inflammatory'],
+                healthFocus: 'Digestive enzymes, vitamin A & C, anti-inflammatory',
+                tasteProfile: 'Smooth tropical sweetness with citrus brightness',
+                keyBenefits: 'Papain enzyme, bromelain, beta-carotene',
+                ingredients: [
+                    '5 oz fresh papaya flesh',
+                    '4 oz fresh pineapple chunks',
+                    '3 oz fresh orange (peeled)',
+                    '2 oz carrot',
+                    '3/4 inch fresh ginger root',
+                    '1/2 fresh lime (juiced)'
+                ]
+            },
+            {
+                id: 'kale-yeah-paradise',
+                name: 'Kale Yeah Paradise',
+                subtitle: 'Supergreens with tropical coconut',
+                tags: ['Supergreens', 'Healthy Fats', 'Omega-3s'],
+                healthFocus: 'Supergreens, healthy fats, omega-3s, sustained energy',
+                tasteProfile: 'Fresh greens with tropical sweetness and coconut texture',
+                keyBenefits: 'Omega-3s, fiber, potassium, sustained energy',
+                ingredients: [
+                    '2 cups fresh kale leaves (stems removed)',
+                    '4 oz fresh pineapple chunks',
+                    '1/2 ripe banana',
+                    '4 oz coconut water',
+                    '2 thin slices fresh coconut meat',
+                    '1 tsp chia seeds (pre-soaked)'
+                ]
+            },
+            {
+                id: 'beet-the-heat',
+                name: 'Beet the Heat',
+                subtitle: 'Earthy roots meet tropical sweetness',
+                tags: ['Nitrates', 'Liver Support', 'Energy'],
+                healthFocus: 'Nitrates for circulation, liver support, energy',
+                tasteProfile: 'Earthy-sweet with citrus brightness',
+                keyBenefits: 'Nitrates, folate, liver detox support',
+                ingredients: [
+                    '4 oz fresh red beet (peeled)',
+                    '3 oz carrot',
+                    '3 oz apple (with skin, cored)',
+                    '3 oz fresh orange (peeled)',
+                    '3/4 inch fresh ginger root',
+                    '1/2 fresh lemon (juiced)'
+                ]
+            },
+            {
+                id: 'pineapple-express',
+                name: 'Pineapple Express',
+                subtitle: 'Pure pineapple perfection with wellness boost',
+                tags: ['Digestive Enzymes', 'Hydration', 'Minerals'],
+                healthFocus: 'Digestive enzymes, hydration, mineral replenishment',
+                tasteProfile: 'Sweet-savory with cooling heat',
+                keyBenefits: 'Bromelain enzyme, natural minerals, hydration',
+                ingredients: [
+                    '8 oz fresh pineapple (core and flesh)',
+                    '3 oz cucumber (with skin)',
+                    '1/4 small jalapeño (seeds removed)',
+                    '1/2 fresh lime (juiced)',
+                    '6-8 fresh mint leaves',
+                    'Pinch of Hawaiian sea salt'
+                ]
+            }
+        ];
+
+        // Cocktail data (signature tropical)
+        const cocktails = [
+            {
+                id: 'spicy-pineapple-margarita',
+                name: 'Spicy Pineapple Margarita',
+                category: 'Margaritas & Mezcal',
+                tags: ['Spicy', 'Tropical', 'Premium Available'],
+                method: 'SHAKE - Muddle jalapeño, shake with ice, double strain',
+                garnish: 'Tajín rim, charred pineapple wedge, jalapeño slice',
+                ingredients: [
+                    '1.5 oz blanco tequila',
+                    '1 oz fresh pineapple juice',
+                    '0.75 oz fresh lime juice',
+                    '0.25 oz agave syrup',
+                    '2–3 muddled jalapeño slices',
+                    'Dash orange bitters (optional)'
+                ]
+            },
+            {
+                id: 'coconut-margarita',
+                name: 'Coconut Margarita',
+                category: 'Margaritas & Mezcal',
+                tags: ['Creamy', 'Tropical', 'Premium Available'],
+                method: 'SHAKE - Shake vigorously with ice, double strain',
+                garnish: 'Toasted coconut rim, lime wheel, mint sprig',
+                ingredients: [
+                    '1.5 oz blanco tequila',
+                    '0.75 oz coconut cream (Coco Lopez)',
+                    '0.75 oz fresh lime juice',
+                    '0.5 oz agave syrup',
+                    '0.25 oz dry curaçao (optional)'
+                ]
+            },
+            {
+                id: 'lilikoi-margarita',
+                name: 'Lilikoi Margarita',
+                category: 'Margaritas & Mezcal',
+                tags: ['Tropical', 'Tart', 'Premium Available'],
+                method: 'SHAKE - Shake with ice, double strain',
+                garnish: 'Lime wheel, edible flower',
+                ingredients: [
+                    '1.5 oz reposado tequila',
+                    '1 oz passionfruit puree',
+                    '0.75 oz lime juice',
+                    '0.25 oz agave syrup'
+                ]
+            },
+            {
+                id: 'cucumber-cooler',
+                name: 'Cucumber Cooler',
+                category: 'Margaritas & Mezcal',
+                tags: ['Refreshing', 'Herbal', 'Mezcal'],
+                method: 'SHAKE & BUILD - Muddle mint gently, shake, strain, top with soda',
+                garnish: 'Mint bouquet, cucumber ribbon',
+                ingredients: [
+                    '1.5 oz mezcal',
+                    '1 oz fresh cucumber juice',
+                    '0.75 oz lime juice',
+                    '0.5 oz agave syrup',
+                    '4–5 mint leaves, gently spanked',
+                    'Top soda water'
+                ]
+            },
+            {
+                id: 'hibiscus-rum-spritz',
+                name: 'Hibiscus Rum Spritz',
+                category: 'Rum Cocktails',
+                tags: ['Floral', 'Light', 'Premium Available'],
+                method: 'BUILD - Build in glass with ice, stir gently',
+                garnish: 'Hibiscus flower or lime wheel',
+                ingredients: [
+                    '1.5 oz white rum',
+                    '1 oz hibiscus syrup',
+                    '0.75 oz lime juice',
+                    'Top soda water or prosecco'
+                ]
+            },
+            {
+                id: 'pineapple-daiquiri',
+                name: 'Pineapple Daiquiri',
+                category: 'Rum Cocktails',
+                tags: ['Classic', 'Tropical', 'Premium Available'],
+                method: 'SHAKE - Shake with ice, double strain',
+                garnish: 'Dehydrated pineapple, mint sprig',
+                ingredients: [
+                    '1.5 oz white rum',
+                    '1 oz pineapple juice',
+                    '0.75 oz lime juice',
+                    '0.25 oz demerara syrup'
+                ]
+            },
+            {
+                id: 'passionfruit-mojito',
+                name: 'Passionfruit Mojito',
+                category: 'Rum Cocktails',
+                tags: ['Tropical', 'Herbal', 'Premium Available'],
+                method: 'SHAKE & BUILD - Muddle mint gently, shake, strain, top with soda',
+                garnish: 'Mint bouquet, passionfruit half (optional)',
+                ingredients: [
+                    '1.5 oz light rum',
+                    '0.75 oz passionfruit puree',
+                    '0.75 oz lime juice',
+                    '0.25 oz demerara syrup',
+                    '6–8 mint leaves, lightly muddled',
+                    'Top soda water'
+                ]
+            },
+            {
+                id: 'leid-luxe',
+                name: 'Kalā Luxe',
+                category: 'Vodka & Gin Cocktails',
+                tags: ['Signature', 'Luxe', 'Premium Available'],
+                method: 'SHAKE & BUILD - Shake first 5 ingredients, strain, top with prosecco',
+                garnish: 'Toasted coconut rim, edible orchid, pineapple slice',
+                ingredients: [
+                    '1.5 oz vodka (or botanical gin)',
+                    '1 oz strawberry, peach, or passionfruit puree',
+                    '0.5 oz coconut cream',
+                    '0.5 oz lemon juice',
+                    '0.25 oz vanilla syrup',
+                    'Top with prosecco float'
+                ]
+            },
+            {
+                id: 'watermelon-basil-smash',
+                name: 'Watermelon Basil Smash',
+                category: 'Vodka & Gin Cocktails',
+                tags: ['Fresh', 'Herbal', 'Premium Available'],
+                method: 'SHAKE - Muddle fruit and herbs, shake, double strain',
+                garnish: 'Basil leaf, watermelon cube',
+                ingredients: [
+                    '1.5 oz gin or vodka',
+                    '2 fresh watermelon cubes, muddled',
+                    '3 basil leaves, lightly muddled',
+                    '0.75 oz lime juice',
+                    '0.25 oz honey syrup'
+                ]
+            },
+            {
+                id: 'guava-fizz',
+                name: 'Guava Fizz',
+                category: 'Vodka & Gin Cocktails',
+                tags: ['Light', 'Tropical', 'Premium Available'],
+                method: 'SHAKE & BUILD - Shake first 4 ingredients, strain, top with soda',
+                garnish: 'Lemon wheel, thyme sprig',
+                ingredients: [
+                    '1.5 oz vodka',
+                    '1 oz guava puree',
+                    '0.5 oz lemon juice',
+                    '0.25 oz simple syrup',
+                    'Top soda water'
+                ]
+            }
+        ];
+
+        // Classic cocktails data
+        const classics = [
+            {
+                id: 'vodka-soda',
+                name: 'Vodka Soda',
+                category: 'Vodka Cocktails',
+                tags: ['Light', 'Classic', 'Low-Cal'],
+                method: 'Build over ice in highball glass',
+                garnish: 'Lime wedge',
+                ingredients: [
+                    '2 oz vodka',
+                    '4-6 oz soda water',
+                    'Lime wedge for garnish'
+                ]
+            },
+            {
+                id: 'screwdriver',
+                name: 'Screwdriver',
+                category: 'Vodka Cocktails',
+                tags: ['Classic', 'Citrus', 'Simple'],
+                method: 'Build over ice in highball glass',
+                garnish: 'Orange slice',
+                ingredients: [
+                    '2 oz vodka',
+                    '4-6 oz fresh orange juice',
+                    'Orange slice for garnish'
+                ]
+            },
+            {
+                id: 'lemon-drop-martini',
+                name: 'Lemon Drop Martini',
+                category: 'Vodka Cocktails',
+                tags: ['Martini', 'Citrus', 'Sweet'],
+                method: 'Shake with ice, strain into chilled martini glass',
+                garnish: 'Sugar rim and lemon twist',
+                ingredients: [
+                    '2 oz vodka',
+                    '0.75 oz fresh lemon juice',
+                    '0.75 oz simple syrup',
+                    'Sugar rim and lemon twist for garnish'
+                ]
+            },
+            {
+                id: 'moscow-mule',
+                name: 'Moscow Mule',
+                category: 'Vodka Cocktails',
+                tags: ['Classic', 'Ginger', 'Copper Mug'],
+                method: 'Serve in copper mug with ice',
+                garnish: 'Lime wheel',
+                ingredients: [
+                    '2 oz vodka',
+                    '0.5 oz fresh lime juice',
+                    '4-6 oz ginger beer',
+                    'Lime wheel for garnish'
+                ]
+            },
+            {
+                id: 'vodka-tonic',
+                name: 'Vodka Tonic',
+                category: 'Vodka Cocktails',
+                tags: ['Classic', 'Refreshing', 'Simple'],
+                method: 'Build over ice in highball glass',
+                garnish: 'Lime wedge',
+                ingredients: [
+                    '2 oz vodka',
+                    '4-6 oz tonic water',
+                    'Lime wedge for garnish'
+                ]
+            },
+            {
+                id: 'vodka-martini',
+                name: 'Vodka Martini',
+                category: 'Vodka Cocktails',
+                tags: ['Martini', 'Classic', 'Strong'],
+                method: 'Stir with ice, strain into chilled martini glass',
+                garnish: 'Lemon twist or olive',
+                ingredients: [
+                    '2.5 oz vodka',
+                    '0.5 oz dry vermouth',
+                    'Lemon twist or olive for garnish'
+                ]
+            },
+            {
+                id: 'gimlet',
+                name: 'Gimlet',
+                category: 'Gin Cocktails',
+                tags: ['Classic', 'Tart', 'Simple'],
+                method: 'Shake with ice, strain into chilled coupe',
+                garnish: 'Lime wheel',
+                ingredients: [
+                    '2 oz gin',
+                    '0.75 oz fresh lime juice',
+                    '0.75 oz simple syrup',
+                    'Lime wheel for garnish'
+                ]
+            },
+            {
+                id: 'bees-knees',
+                name: 'Bee\'s Knees',
+                category: 'Gin Cocktails',
+                tags: ['Classic', 'Honey', 'Prohibition'],
+                method: 'Shake with ice, strain into chilled coupe',
+                garnish: 'Lemon twist',
+                ingredients: [
+                    '2 oz gin',
+                    '0.75 oz fresh lemon juice',
+                    '0.75 oz honey syrup (2:1 honey to water)',
+                    'Lemon twist for garnish'
+                ]
+            },
+            {
+                id: 'tom-collins',
+                name: 'Tom Collins',
+                category: 'Gin Cocktails',
+                tags: ['Classic', 'Fizzy', 'Refreshing'],
+                method: 'Shake gin, lemon, syrup with ice, strain over ice, top with soda',
+                garnish: 'Lemon slice and cherry',
+                ingredients: [
+                    '2 oz gin',
+                    '1 oz fresh lemon juice',
+                    '0.5 oz simple syrup',
+                    'Soda water',
+                    'Lemon slice and cherry for garnish'
+                ]
+            },
+            {
+                id: 'gin-tonic',
+                name: 'Gin & Tonic',
+                category: 'Gin Cocktails',
+                tags: ['Classic', 'Botanical', 'Simple'],
+                method: 'Build over ice in highball glass',
+                garnish: 'Lime wedge',
+                ingredients: [
+                    '2 oz gin',
+                    '4-6 oz tonic water',
+                    'Lime wedge for garnish'
+                ]
+            },
+            {
+                id: 'gin-martini',
+                name: 'Martini',
+                category: 'Gin Cocktails',
+                tags: ['Martini', 'Classic', 'Strong'],
+                method: 'Stir with ice, strain into chilled martini glass',
+                garnish: 'Lemon twist or olive',
+                ingredients: [
+                    '2.5 oz gin',
+                    '0.5 oz dry vermouth',
+                    'Lemon twist or olive for garnish'
+                ]
+            },
+            {
+                id: 'mojito',
+                name: 'Mojito',
+                category: 'Rum Cocktails',
+                tags: ['Classic', 'Mint', 'Cuban'],
+                method: 'Muddle mint with syrup, add rum and lime, shake, strain over ice, top with soda',
+                garnish: 'Mint sprig',
+                ingredients: [
+                    '2 oz white rum',
+                    '1 oz fresh lime juice',
+                    '0.75 oz simple syrup',
+                    '8-10 fresh mint leaves',
+                    'Soda water',
+                    'Mint sprig for garnish'
+                ]
+            },
+            {
+                id: 'daiquiri',
+                name: 'Daiquiri',
+                category: 'Rum Cocktails',
+                tags: ['Classic', 'Simple', 'Cuban'],
+                method: 'Shake with ice, strain into chilled coupe',
+                garnish: 'Lime wheel',
+                ingredients: [
+                    '2 oz white rum',
+                    '1 oz fresh lime juice',
+                    '0.75 oz simple syrup',
+                    'Lime wheel for garnish'
+                ]
+            },
+            {
+                id: 'cuba-libre',
+                name: 'Cuba Libre',
+                category: 'Rum Cocktails',
+                tags: ['Classic', 'Cola', 'Simple'],
+                method: 'Build over ice in highball glass',
+                garnish: 'Lime wedge',
+                ingredients: [
+                    '2 oz white rum',
+                    '0.5 oz fresh lime juice',
+                    '4-6 oz Coca-Cola',
+                    'Lime wedge for garnish'
+                ]
+            },
+            {
+                id: 'dark-n-stormy',
+                name: 'Dark \'n\' Stormy',
+                category: 'Rum Cocktails',
+                tags: ['Classic', 'Ginger', 'Dark Rum'],
+                method: 'Build over ice in highball glass',
+                garnish: 'Lime wedge',
+                ingredients: [
+                    '2 oz dark rum',
+                    '0.5 oz fresh lime juice',
+                    '4-6 oz ginger beer',
+                    'Lime wedge for garnish'
+                ]
+            },
+            {
+                id: 'margarita-classic',
+                name: 'Margarita',
+                category: 'Tequila Cocktails',
+                tags: ['Classic', 'Mexican', 'Salt Rim'],
+                method: 'Shake with ice, strain into chilled coupe or over ice',
+                garnish: 'Salt rim (optional), lime wheel',
+                ingredients: [
+                    '2 oz tequila blanco',
+                    '1 oz fresh lime juice',
+                    '1 oz agave syrup (substitute for triple sec)',
+                    'Salt rim (optional)',
+                    'Lime wheel for garnish'
+                ]
+            },
+            {
+                id: 'tommys-margarita',
+                name: 'Tommy\'s Margarita',
+                category: 'Tequila Cocktails',
+                tags: ['Classic', 'Agave', 'Simple'],
+                method: 'Shake with ice, strain into chilled coupe',
+                garnish: 'Salt rim (optional), lime wheel',
+                ingredients: [
+                    '2 oz tequila blanco',
+                    '1 oz fresh lime juice',
+                    '0.5 oz agave nectar',
+                    'Salt rim (optional)',
+                    'Lime wheel for garnish'
+                ]
+            },
+            {
+                id: 'tequila-sour',
+                name: 'Tequila Sour',
+                category: 'Tequila Cocktails',
+                tags: ['Sour', 'Classic', 'Citrus'],
+                method: 'Shake with ice, strain into old-fashioned glass',
+                garnish: 'Lime wheel',
+                ingredients: [
+                    '2 oz tequila blanco',
+                    '1 oz fresh lime juice',
+                    '0.75 oz simple syrup',
+                    'Lime wheel for garnish'
+                ]
+            },
+            {
+                id: 'ranch-water',
+                name: 'Ranch Water',
+                category: 'Tequila Cocktails',
+                tags: ['Texas', 'Light', 'Simple'],
+                method: 'Build over ice in highball glass',
+                garnish: 'Lime wedge',
+                ingredients: [
+                    '2 oz tequila blanco',
+                    '0.5 oz fresh lime juice',
+                    '4-6 oz soda water',
+                    'Lime wedge for garnish'
+                ]
+            },
+            {
+                id: 'paloma',
+                name: 'Paloma',
+                category: 'Tequila Cocktails',
+                tags: ['Mexican', 'Grapefruit', 'Classic'],
+                method: 'Build over ice in highball glass',
+                garnish: 'Salt rim, lime wedge',
+                ingredients: [
+                    '2 oz tequila blanco',
+                    '0.5 oz fresh lime juice',
+                    '4-6 oz grapefruit soda',
+                    'Salt rim',
+                    'Lime wedge for garnish'
+                ]
+            },
+            {
+                id: 'tequila-sunrise',
+                name: 'Tequila Sunrise',
+                category: 'Tequila Cocktails',
+                tags: ['Classic', 'Layered', 'Sweet'],
+                method: 'Build tequila and orange juice over ice, slowly pour grenadine',
+                garnish: 'Orange slice and cherry',
+                ingredients: [
+                    '2 oz tequila blanco',
+                    '4 oz fresh orange juice',
+                    '0.5 oz grenadine',
+                    'Orange slice and cherry for garnish'
+                ]
+            },
+            {
+                id: 'whiskey-sour',
+                name: 'Whiskey Sour',
+                category: 'Whiskey Cocktails',
+                tags: ['Classic', 'Sour', 'Citrus'],
+                method: 'Shake with ice, strain into rocks glass',
+                garnish: 'Lemon wheel and cherry',
+                ingredients: [
+                    '2 oz whiskey',
+                    '0.75 oz fresh lemon juice',
+                    '0.75 oz simple syrup',
+                    '0.5 oz egg white (optional, for foam)',
+                    'Lemon wheel and cherry for garnish'
+                ]
+            },
+            {
+                id: 'old-fashioned',
+                name: 'Old Fashioned',
+                category: 'Whiskey Cocktails',
+                tags: ['Classic', 'Strong', 'Stirred'],
+                method: 'Muddle sugar cube with bitters, add whiskey and ice, stir',
+                garnish: 'Orange peel and cherry',
+                ingredients: [
+                    '2 oz bourbon or rye whiskey',
+                    '1 sugar cube (or 0.25 oz simple syrup)',
+                    '2-3 dashes Angostura bitters',
+                    'Orange peel and cherry for garnish'
+                ]
+            },
+            {
+                id: 'whiskey-ginger',
+                name: 'Whiskey Ginger',
+                category: 'Whiskey Cocktails',
+                tags: ['Simple', 'Refreshing', 'Ginger'],
+                method: 'Build over ice in highball glass',
+                garnish: 'Lime wedge',
+                ingredients: [
+                    '2 oz whiskey',
+                    '4-6 oz ginger beer',
+                    'Lime wedge for garnish'
+                ]
+            },
+            {
+                id: 'manhattan',
+                name: 'Manhattan',
+                category: 'Whiskey Cocktails',
+                tags: ['Classic', 'Strong', 'Stirred'],
+                method: 'Stir with ice, strain into chilled coupe',
+                garnish: 'Cherry',
+                ingredients: [
+                    '2 oz rye whiskey or bourbon',
+                    '1 oz sweet vermouth',
+                    '2 dashes Angostura bitters',
+                    'Cherry for garnish'
+                ]
+            },
+            {
+                id: 'mint-julep',
+                name: 'Mint Julep',
+                category: 'Whiskey Cocktails',
+                tags: ['Classic', 'Mint', 'Southern'],
+                method: 'Muddle mint with syrup, add bourbon and crushed ice',
+                garnish: 'Mint bouquet, powdered sugar (optional)',
+                ingredients: [
+                    '2.5 oz bourbon',
+                    '0.5 oz simple syrup',
+                    '8-10 fresh mint leaves',
+                    'Crushed ice',
+                    'Mint bouquet for garnish'
+                ]
+            },
+            {
+                id: 'aperol-spritz',
+                name: 'Aperol Spritz',
+                category: 'Wine & Aperitif Cocktails',
+                tags: ['Italian', 'Light', 'Bubbly'],
+                method: 'Build over ice in wine glass',
+                garnish: 'Orange slice',
+                ingredients: [
+                    '3 oz prosecco',
+                    '2 oz Aperol',
+                    '1 oz soda water',
+                    'Orange slice for garnish'
+                ]
+            },
+            {
+                id: 'mimosa',
+                name: 'Mimosa',
+                category: 'Wine & Aperitif Cocktails',
+                tags: ['Brunch', 'Simple', 'Bubbly'],
+                method: 'Build in champagne flute',
+                garnish: 'Orange twist (optional)',
+                ingredients: [
+                    '3 oz champagne or prosecco',
+                    '3 oz fresh orange juice',
+                    'Orange twist for garnish (optional)'
+                ]
+            },
+            {
+                id: 'bellini',
+                name: 'Bellini',
+                category: 'Wine & Aperitif Cocktails',
+                tags: ['Italian', 'Brunch', 'Fruity'],
+                method: 'Build in champagne flute',
+                garnish: 'Peach slice (optional)',
+                ingredients: [
+                    '4 oz prosecco',
+                    '2 oz peach puree',
+                    'Peach slice for garnish (optional)'
+                ]
+            },
+            {
+                id: 'mai-tai',
+                name: 'Mai Tai',
+                category: 'Rum Cocktails',
+                tags: ['Tiki', 'Classic', 'Complex'],
+                method: 'Shake with ice, strain over fresh ice',
+                garnish: 'Mint sprig, lime wheel, pineapple wedge',
+                ingredients: [
+                    '1.5 oz light rum',
+                    '0.5 oz dark rum (float on top)',
+                    '0.75 oz lime juice',
+                    '0.5 oz orange curaçao',
+                    '0.5 oz orgeat syrup',
+                    '0.25 oz simple syrup',
+                    'Mint sprig, lime wheel, pineapple wedge for garnish'
+                ]
+            },
+            {
+                id: 'pina-colada',
+                name: 'Piña Colada',
+                category: 'Rum Cocktails',
+                tags: ['Tropical', 'Creamy', 'Blended'],
+                method: 'Blend with ice or shake vigorously',
+                garnish: 'Pineapple wedge and cherry',
+                ingredients: [
+                    '2 oz light rum',
+                    '3 oz pineapple juice',
+                    '1.5 oz coconut cream',
+                    'Pineapple wedge and cherry for garnish'
+                ]
+            },
+            {
+                id: 'hurricane',
+                name: 'Hurricane',
+                category: 'Rum Cocktails',
+                tags: ['New Orleans', 'Fruity', 'Strong'],
+                method: 'Shake with ice, strain into hurricane glass',
+                garnish: 'Orange slice and cherry',
+                ingredients: [
+                    '1 oz light rum',
+                    '1 oz dark rum',
+                    '1 oz passionfruit juice or syrup',
+                    '0.5 oz lime juice',
+                    '0.5 oz orange juice',
+                    '0.5 oz grenadine',
+                    'Orange slice and cherry for garnish'
+                ]
+            },
+            {
+                id: 'rum-and-coke',
+                name: 'Rum & Coke',
+                category: 'Rum Cocktails',
+                tags: ['Simple', 'Classic', 'Easy'],
+                method: 'Build over ice in highball glass',
+                garnish: 'Lime wedge',
+                ingredients: [
+                    '2 oz rum',
+                    '4-6 oz Coca-Cola',
+                    'Lime wedge for garnish'
+                ]
+            },
+            {
+                id: 'gin-rickey',
+                name: 'Gin Rickey',
+                category: 'Gin Cocktails',
+                tags: ['Classic', 'Light', 'Refreshing'],
+                method: 'Build over ice in highball glass',
+                garnish: 'Lime wedge',
+                ingredients: [
+                    '2 oz gin',
+                    '0.75 oz fresh lime juice',
+                    '4-6 oz soda water',
+                    'Lime wedge for garnish'
+                ]
+            },
+            {
+                id: 'cape-codder',
+                name: 'Cape Codder',
+                category: 'Vodka Cocktails',
+                tags: ['Simple', 'Fruity', 'Classic'],
+                method: 'Build over ice in highball glass',
+                garnish: 'Lime wedge',
+                ingredients: [
+                    '2 oz vodka',
+                    '4-6 oz cranberry juice',
+                    'Lime wedge for garnish'
+                ]
+            }
+        ];
+
+        // Global variable to store current recipe for batch calculation
+        let currentRecipe = null;
+
+        // DOM elements
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const searchInput = document.getElementById('searchInput');
+        const cocktailSearchInput = document.getElementById('cocktailSearchInput');
+        const classicSearchInput = document.getElementById('classicSearchInput');
+        const recipesGrid = document.getElementById('recipesGrid');
+        const cocktailsGrid = document.getElementById('cocktailsGrid');
+        const classicsGrid = document.getElementById('classicsGrid');
+        const recipeModal = document.getElementById('recipeModal');
+        const closeModal = document.getElementById('closeModal');
+        const modalRecipeContent = document.getElementById('modalRecipeContent');
+
+        // Initialize app
+        function init() {
+            renderRecipes(recipes);
+            renderCocktails(cocktails);
+            renderClassics(classics);
+            setupEventListeners();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+            });
+
+            // Search functionality
+            if (searchInput) searchInput.addEventListener('input', handleSearch);
+            if (cocktailSearchInput) cocktailSearchInput.addEventListener('input', handleCocktailSearch);
+            if (classicSearchInput) classicSearchInput.addEventListener('input', handleClassicSearch);
+
+            // Modal controls
+            closeModal.addEventListener('click', closeRecipeModal);
+            recipeModal.addEventListener('click', (e) => {
+                if (e.target === recipeModal) closeRecipeModal();
+            });
+
+            // Escape key to close modal
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeRecipeModal();
+            });
+        }
+
+        // Switch tabs
+        function switchTab(tabId) {
+            // Update tab buttons
+            tabs.forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.tab === tabId);
+            });
+
+            // Update tab content
+            tabContents.forEach(content => {
+                content.classList.toggle('active', content.id === tabId);
+            });
+        }
+
+        // Handle search
+        function handleSearch() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredRecipes = recipes.filter(recipe => 
+                recipe.name.toLowerCase().includes(searchTerm) ||
+                recipe.subtitle.toLowerCase().includes(searchTerm) ||
+                recipe.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                recipe.ingredients.some(ingredient => ingredient.toLowerCase().includes(searchTerm))
+            );
+            renderRecipes(filteredRecipes);
+        }
+
+        // Handle cocktail search
+        function handleCocktailSearch() {
+            const searchTerm = cocktailSearchInput.value.toLowerCase();
+            const filteredCocktails = cocktails.filter(cocktail => 
+                cocktail.name.toLowerCase().includes(searchTerm) ||
+                cocktail.category.toLowerCase().includes(searchTerm) ||
+                cocktail.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                cocktail.ingredients.some(ingredient => ingredient.toLowerCase().includes(searchTerm))
+            );
+            renderCocktails(filteredCocktails);
+        }
+
+        // Handle classic cocktail search
+        function handleClassicSearch() {
+            const searchTerm = classicSearchInput.value.toLowerCase();
+            const filteredClassics = classics.filter(classic => 
+                classic.name.toLowerCase().includes(searchTerm) ||
+                classic.category.toLowerCase().includes(searchTerm) ||
+                classic.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                classic.ingredients.some(ingredient => ingredient.toLowerCase().includes(searchTerm))
+            );
+            renderClassics(filteredClassics);
+        }
+
+        // Render recipes
+        function renderRecipes(recipesToRender) {
+            if (!recipesGrid) return;
+            recipesGrid.innerHTML = recipesToRender.map(recipe => `
+                <div class="recipe-card" onclick="openRecipeModal('${recipe.id}')">
+                    <h3>${recipe.name}</h3>
+                    <p class="subtitle">${recipe.subtitle}</p>
+                    <div class="tags">
+                        ${recipe.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="ingredients-preview">
+                        ${recipe.ingredients.slice(0, 3).join(', ')}${recipe.ingredients.length > 3 ? '...' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render cocktails
+        function renderCocktails(cocktailsToRender) {
+            if (!cocktailsGrid) return;
+            cocktailsGrid.innerHTML = cocktailsToRender.map(cocktail => `
+                <div class="recipe-card" onclick="openCocktailModal('${cocktail.id}')">
+                    <h3>${cocktail.name}</h3>
+                    <p class="subtitle">${cocktail.category}</p>
+                    <div class="tags">
+                        ${cocktail.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="ingredients-preview">
+                        ${cocktail.ingredients.slice(0, 3).join(', ')}${cocktail.ingredients.length > 3 ? '...' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render classic cocktails
+        function renderClassics(classicsToRender) {
+            if (!classicsGrid) return;
+            classicsGrid.innerHTML = classicsToRender.map(classic => `
+                <div class="recipe-card" onclick="openClassicModal('${classic.id}')">
+                    <h3>${classic.name}</h3>
+                    <p class="subtitle">${classic.category}</p>
+                    <div class="tags">
+                        ${classic.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="ingredients-preview">
+                        ${classic.ingredients.slice(0, 3).join(', ')}${classic.ingredients.length > 3 ? '...' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Function to parse and scale ingredient amounts
+        function scaleIngredient(ingredient, multiplier) {
+            let scaledIngredient = ingredient;
+
+            // Handle fractions like 1/2, 1/4, 3/4
+            scaledIngredient = scaledIngredient.replace(/(\d+)\/(\d+)/g, (match, num, den) => {
+                const decimal = (parseFloat(num) / parseFloat(den)) * multiplier;
+                if (decimal < 1) {
+                    // Convert back to fraction if less than 1
+                    const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+                    const commonDenom = 4; // Use quarters for simplicity
+                    const numerator = Math.round(decimal * commonDenom);
+                    const simplified = gcd(numerator, commonDenom);
+                    return numerator === commonDenom ? '1' : `${numerator/simplified}/${commonDenom/simplified}`;
+                } else {
+                    return decimal % 1 === 0 ? decimal.toString() : decimal.toFixed(2);
+                }
+            });
+
+            // Handle regular decimal numbers with units
+            scaledIngredient = scaledIngredient.replace(/(\d+(?:\.\d+)?)\s*(oz|cup|cups|inch|inches|tsp|tbsp)/gi, (match, amount, unit) => {
+                const scaledAmount = parseFloat(amount) * multiplier;
+                return scaledAmount % 1 === 0 ? `${scaledAmount} ${unit}` : `${scaledAmount.toFixed(2)} ${unit}`;
+            });
+
+            // Handle ranges like 6-8, 8-10
+            scaledIngredient = scaledIngredient.replace(/(\d+)-(\d+)/g, (match, min, max) => {
+                const scaledMin = parseInt(min) * multiplier;
+                const scaledMax = parseInt(max) * multiplier;
+                return `${scaledMin}-${scaledMax}`;
+            });
+
+            return scaledIngredient;
+        }
+
+        // Function to update batch size
+        function updateBatchSize() {
+            if (!currentRecipe) return;
+            
+            const batchSize = parseInt(document.getElementById('batchSize').value);
+            const ingredientsList = document.getElementById('ingredientsList');
+            
+            const scaledIngredients = currentRecipe.ingredients.map(ingredient => 
+                scaleIngredient(ingredient, batchSize)
+            );
+            
+            ingredientsList.innerHTML = scaledIngredients.map(ingredient => 
+                `<li>${ingredient}</li>`
+            ).join('');
+        }
+
+        // Open recipe modal
+        function openRecipeModal(recipeId) {
+            const recipe = recipes.find(r => r.id === recipeId);
+            if (!recipe) return;
+
+            // Store current recipe for batch calculations
+            currentRecipe = recipe;
+
+            modalRecipeContent.innerHTML = `
+                <h2>${recipe.name}</h2>
+                <p class="subtitle">${recipe.subtitle}</p>
+                
+                <div class="info-section">
+                    <h4>Health Focus</h4>
+                    <p>${recipe.healthFocus}</p>
+                </div>
+
+                <div class="info-section">
+                    <h4>Taste Profile</h4>
+                    <p>${recipe.tasteProfile}</p>
+                </div>
+
+                <div class="info-section">
+                    <h4>Key Benefits</h4>
+                    <p>${recipe.keyBenefits}</p>
+                </div>
+
+                <h3>Ingredients (16oz serving)</h3>
+                <div class="batch-calculator">
+                    <label for="batchSize">Batch Size:</label>
+                    <select id="batchSize" onchange="updateBatchSize()">
+                        <option value="1">1x (16oz)</option>
+                        <option value="2">2x (32oz)</option>
+                        <option value="3">3x (48oz)</option>
+                        <option value="4">4x (64oz)</option>
+                        <option value="5">5x (80oz)</option>
+                        <option value="6">6x (96oz)</option>
+                        <option value="8">8x (128oz)</option>
+                        <option value="10">10x (160oz)</option>
+                    </select>
+                </div>
+                <ul class="ingredients-list" id="ingredientsList">
+                    ${recipe.ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}
+                </ul>
+            `;
+
+            recipeModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Open cocktail modal
+        function openCocktailModal(cocktailId) {
+            const cocktail = cocktails.find(c => c.id === cocktailId);
+            if (!cocktail) return;
+
+            // Store current cocktail for batch calculations
+            currentRecipe = cocktail;
+
+            modalRecipeContent.innerHTML = `
+                <div class="cocktail-section">
+                    <h2>${cocktail.name}</h2>
+                    <p class="subtitle">${cocktail.category}</p>
+                    
+                    <div class="info-section">
+                        <h4>Method</h4>
+                        <p>${cocktail.method}</p>
+                    </div>
+
+                    <div class="info-section">
+                        <h4>Garnish</h4>
+                        <p>${cocktail.garnish}</p>
+                    </div>
+
+                    <h3>Ingredients (Single Serving)</h3>
+                    <div class="batch-calculator">
+                        <label for="batchSize">Batch Size:</label>
+                        <select id="batchSize" onchange="updateBatchSize()">
+                            <option value="1">1x (Single)</option>
+                            <option value="2">2x (Double)</option>
+                            <option value="3">3x (Triple)</option>
+                            <option value="4">4x (Quad)</option>
+                            <option value="5">5x (Five)</option>
+                            <option value="6">6x (Six)</option>
+                            <option value="8">8x (Eight)</option>
+                            <option value="10">10x (Ten)</option>
+                        </select>
+                    </div>
+                    <ul class="ingredients-list" id="ingredientsList">
+                        ${cocktail.ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            recipeModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Open classic cocktail modal
+        function openClassicModal(classicId) {
+            const classic = classics.find(c => c.id === classicId);
+            if (!classic) return;
+
+            // Store current classic for batch calculations
+            currentRecipe = classic;
+
+            modalRecipeContent.innerHTML = `
+                <div class="cocktail-section">
+                    <h2>${classic.name}</h2>
+                    <p class="subtitle">${classic.category}</p>
+                    
+                    <div class="info-section">
+                        <h4>Method</h4>
+                        <p>${classic.method}</p>
+                    </div>
+
+                    <div class="info-section">
+                        <h4>Garnish</h4>
+                        <p>${classic.garnish}</p>
+                    </div>
+
+                    <h3>Ingredients (Single Serving)</h3>
+                    <div class="batch-calculator">
+                        <label for="batchSize">Batch Size:</label>
+                        <select id="batchSize" onchange="updateBatchSize()">
+                            <option value="1">1x (Single)</option>
+                            <option value="2">2x (Double)</option>
+                            <option value="3">3x (Triple)</option>
+                            <option value="4">4x (Quad)</option>
+                            <option value="5">5x (Five)</option>
+                            <option value="6">6x (Six)</option>
+                            <option value="8">8x (Eight)</option>
+                            <option value="10">10x (Ten)</option>
+                        </select>
+                    </div>
+                    <ul class="ingredients-list" id="ingredientsList">
+                        ${classic.ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            recipeModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close recipe modal
+        function closeRecipeModal() {
+            recipeModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            currentRecipe = null; // Clear current recipe
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
